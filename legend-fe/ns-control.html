@@ -54,7 +54,7 @@ var errCount = 0 ;
 	$('.action').on('click', function(){
 		var $t = $(this);
 		var action = $t.attr('id');
-		
+
 		if(action == 'zoomout' || action == 'zoomin'){
 			setFunction('focus','1');
 		}
@@ -268,10 +268,11 @@ setInterval(getOrder,1000);
 			<span class="action" id="zoomout">ZOOM OUT!</span>
 		</p>
 		<p>
-			10분 넘었겠지?... 인사 잘하고 마무리!
+			<span class="action" id="zoomin">ZOOM IN!</span>
 		</p>
 		<p>
-			<span class="action" id="zoomin">ZOOM IN!</span>
+			10분 넘었겠지?... 인사 잘하고 마무리!
+			<a style="font-size:150%; color:#ff4500;" onclick="javascript:setFunction('userControl','true');">화면이동 TRUE !!!!</a>
 		</p>
 	</div>
 </div>
