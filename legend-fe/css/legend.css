@@ -1,0 +1,56 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+@import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);
+@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+@import url(https://raw.githubusercontent.com/theleagueof/league-gothic/master/webfonts/stylesheet.css);
+
+/*font setting */
+.ft-batang{font-family: 'KoPub Batang', serif;}
+.ft-yeongjo{font-family: 'Nanum Myeongjo', serif;}
+.ft-jeju{font-family: 'Jeju Gothic', serif;}
+.ft-ital{font-family: 'Italianno', cursive;}
+.ft-ngothic{font-family: 'Nanum Gothic', serif;}
+
+.red{color:#d32;}
+.gray{color:555;}
+.blue{color:blue;}
+.black{color:black;}
+.big150{font-size:150%;font-weight: 880;}
+.big200{font-size:200%;font-weight: 890;}
+.big300{font-size:200%;font-weight: 900;}
+.small70{font-size:70%;}
+.small80{font-size:80%;}
+.small90{font-size:90%;}
+.logoFont{color:#fff;}
+.mr0{margin-right:0;}
+.mg10{margin:10px;}
+.mg5{margin:5px;}
+.mg2{margin:2px;}
+.mgdn1{margin-bottom: 1px;}
+.mgdn2{margin-bottom: 2px;}
+.pd10{padding: 10px;}
+.pb10{padding-bottom: 10px;}
+.pb20{padding-bottom: 20px;}
+.pb30{padding-bottom: 30px;}
+.pt10{padding-top: 10px;}
+.pt20{padding-top: 20px;}
+.pt30{padding-top: 30px;}
+.pt40{padding-top: 40px;}
+.pt50{padding-top: 50px;}
+.pt70{padding-top: 70px;}
+
+.legend-top{position:relative;float: left;}
+.legend-top-text{position: absolute;bottom:5%;right: 5%;}
+
+
+/*釉붾줉�씪�씤*/
+.under-line2-80{ border-bottom: 2px #444 solid; width:80%; margin:auto;}
+.under-line2-60{ border-bottom: 2px #444 solid; width:60%; margin:auto;}
+.under-line2-40{ border-bottom: 2px #444 solid; width:40%; margin:auto;}
+
+.ab-base{position: relative;}
+.ab-r5{position: absolute;right: 5%;}
+
+/*footer*/
+footer{margin-top:10px; background-color: #ddd; padding-top:10px; }

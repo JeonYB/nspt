@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<meta content="IE=edge" http-equiv=X-UA-Compatible> 
+<!-- <meta content="width=device-width,initial-scale=1" name=viewport> -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+ 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Italianno" rel="stylesheet">
+<link rel="stylesheet" href="./css/legend.css">
+
+<script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./js/jquery-ui-1.10.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="./js/legend.js"></script>
+<!-- <script src="https://unpkg.com/vue"></script> -->
+<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+
+<style>
+.gray{background-color: #ffff00; padding: 0 3px 0 3px;}
+.global-info{position: fixed; top: 0; width: 100%; background-color: #dddddd;}
+.board{margin-top: 20px;}
+.action{font-size: 130%; color:#ff4500;}
+</style>
+
+<script type="text/javascript">
+var arrH = [0,-100,-200];
+var errCount = 0 ;
+/*******************************************************************************
+ ** 1. DOCUMENT READY
+ *******************************************************************************/
+($(function(){
+	/** (1) VUE Component Setting *********************************************
+	var vm = new Vue({
+		el : '#card1'
+		, data: {
+			
+		}
+	//	, components:{
+	//		'card1' : () => import('./vue/test.vue')
+	//	}
+	});
+	*/
+	
+	/** (2) Event Binding  *****************************************************/
+	$('h2').on('click',function(){
+		var fn = $(this).data('focus');
+		setFunction('focus',fn);
+	});
+	
+	$('.action').on('click', function(){
+		var $t = $(this);
+		var action = $t.attr('id');
+		
+		if(action == 'zoomout' || action == 'zoomin'){
+			setFunction('focus','1');
+		}
+		
+		setFunction('action',action);
+	});
+	
+	$('#init').on('click',function(){
+		setFunction('focus','1');
+		setFunction('action','void');
+		setFunction('userControl','false');
+	});
+	
+	/** (3) Layout Setting  ****************************************************/
+}));
+
+var setFunction = function(method,value){
+	if(IS_PROD){
+		$.get(W_DOMAIN + 'api/set/' + method + '/' + value ).done(function(data){
+			console.log(data);
+		}).error(fError);
+	}else{
+		$.getJSON(W_DOMAIN + 'api/set/' + method + '/' + value + '?collBack=?',{format: "json"}).done(function(data){
+			console.log(data);
+		});
+	}
+}
+
+
+var fDone = function(data){
+	var controlSeq = data.controlSeq;
+	var userControl = data.userControl;
+	var fn = data.focus;
+	var action = data.action;
+	$('#controlSeq').text(controlSeq);
+	$('#userControl').text(userControl);
+	$('#focus').text(fn);
+	$('#action').text(action);
+	$('h2').each(function(){
+		if(fn == $(this).data('focus')){
+			$(this).css({'background-color':'#ffff00'});
+		}else{
+			$(this).css({'background-color':''});
+		}
+	});
+}
+
+var fError = function(){
+	if(errCount++ > 10){
+		console.log("서버가 죽으셨나...");
+	}
+}
+
+// polling;;;; not push
+var getOrder = function(){
+	$.getJSON(W_DOMAIN + PT_URL + CALLBACK_OPTION).done(fDone).error(fError);
+}
+
+setInterval(getOrder,1000);
+</script>
+
+<title>NS HomeShopping-PT CONTROL</title>
+</head>
+<body>
+<div class="global-info">
+	seq:<span class ="gray" id="controlSeq"></span>
+	ctl:<span class ="gray" id="userControl"></span>
+	focus:<span class ="gray" id="focus"></span>
+	act:<span class ="gray" id="action"></span>
+	<span class="action" id="void">VOID</span>
+</div>
+<div class="board">
+	<h1 id="init">초기화!!</h1>
+	<div class="card" id="card1">
+		<h2 data-focus="1" class="title">Slide 1. 표지</h2>
+		<p>정중하게 인사하고 시작.</p>
+	</div>
+	<div class="card" id="card2">
+		<h2 data-focus="2" class="title">Slide 2. 목차</h2>
+		<p>목차 설명</p>
+		<div>
+			Slide 3. 자기소개<br/>
+			Slide 4. U-CAMP, 본사 모바일 인트라넷<br/>
+			Slide 5. 2년 반의 눈높이 SM<br/>
+			Slide 6. LG.com 삼성멤버십<br/>
+			Slide 7. e-Bay, CJ-Hello<br/>
+			Slide 8. Github - NS-PT(be,fe)<br/>
+			Slide 9. 마치며 Q&A<br/>
+		</div>
+	</div>
+	<div class="card" id="card3">
+		<h2 data-focus="3" class="title">Slide 3. 자기소개</h2>
+
+		<p>
+			87년생 31. 3살의 딸, 와이프와 경기도 안양 거주. <span class="action" id="show-action-slide3-1">30분 내 NS홈쇼핑 도착.</span>
+		</p>
+		<p>
+			밝고 긍정적인 성격, 집에서 요리는 제가 담당 가정적인 남자.
+		</p>
+		<p>
+			경기도 수원 옆 화성의 협성대학교 컴퓨터 공학과 졸업. 공부보다는 학생회 활동에 관심 많음.
+		</p>
+		<p>
+			2012년 8월부터 LG-CNS UCAMP Java 전문가 과정 수료 후 지엠 솔루션 입사 현재까지 재직중.
+		</p>
+		<p>
+			Java 웹 기술에 강함.
+		</p>
+	</div>
+	<div class="card" id="card4">
+		<h2 data-focus="4" class="title">Slide 4. U-CAMP, 본사 모바일 인트라넷</h2>
+		<p>
+			LG-CNS의 JAVA 전문가 과정. 지엠솔루션 입사를 위한 필수 과정
+		</p>
+		<p>
+			SUN 출신 우수한 강사, 70명 중 3등 수료. 파일럿 프로젝트에서 디자인 감각만 있었다면 1등도.. 
+		</p>
+		<p>
+			수료 이후 지엠솔루션 정식 입사. 입사 후 경영진에게 본사 홈페이지 모바일화를 제안.
+		</p>
+		<p>
+			전자정부 프레임워크 + Jquery Mobile을 이용하여 3개월 간 제작
+		</p>
+		<p>
+			비용정산 결재시스템, 사내 커뮤니티, 리조트 예약시스템, 일정관리, 메시지, 사원검색 등의 기능 개발
+		</p>
+	</div>
+	<div class="card" id="card5">
+		<h2 data-focus="5" class="title">Slide 5. 대교 눈높이 SM운영</h2>
+		<p>
+			2년반 동안 대교 그룹 눈높이 학습지 서비스중 Smart MOS라는 앱을 운영함.
+		</p>
+		<p>
+			교사들이 가지고 다니는 스마트폰 앱. 학생관리, 진도, 채점, 카드결재, 스마트 컨텐츠를 관리.
+		</p>
+		<p>
+			동기화, 카드결제 데몬, SMS 발송, 단말기관리시스템 운영. 
+		</p>
+		<p class="action" id="show-action-slide5-1">
+		
+			모니터링 시스템 모바일 페이지 제작. 
+		</p>
+		
+	</div>
+	<div class="card" id="card6">
+		<h2 data-focus="6" class="title">Slide 6. LG.com 삼성멤버십</h2>
+		<p>
+			<span class="action" id="goLgcom">LG.COM UK GO!</span>
+		</p>
+		<p>
+			<span class="action" id="hideModal">모달닫기!</span>
+		</p>
+		<p>
+			제품 Features 개발. Compare, Find the Right Product 개발
+		</p>
+		<p>
+			개인적으로 국가별 메세지 관리시스템 개발 
+		</p>
+		<p>
+			<span class="action" id="goSamsung">Samsung Membership GO!</span>
+		</p>
+		<p>
+			첫 PL 프로젝트
+		</p>
+		<p>
+			SEMP 독특한 구조의 하이브리드 APP
+		</p>
+		<p>
+			<span class="action" id="hideModal">모달닫기!</span>
+		</p>
+	</div>
+	<div class="card" id="card7">
+		<h2 data-focus="7" class="title">Slide 7. e-Bay, CJ-Hello</h2>
+		<p>
+			LQS List Quality Score. 상품정보 기반 리스트 우선순위 점수화.
+		</p>
+		<p>
+			마이옥션 주문내역, 클레임 운영
+			nodejs, angularjs, react 등 신기술 활용
+		</p>
+		<p>
+		</p>
+		<p>
+			현재는 CJ헬로의 렌탈사업 개발중. 
+		</p>
+		<p>
+			고객에게 상품을 공급하는 공급사와 인터페이스
+		</p>
+		<p>
+			
+		</p>
+	</div>
+	<div class="card" id="card8">
+		<h2 data-focus="8" class="title">Slide 8. Github! NS-PT(be,fe)</h2>
+		<p>	
+			PC 깃허브 고고
+		</p>
+		<p>
+			private repository를 무료로 제공하는 gitlab에서 작성함
+		</p>
+		<p>
+			fe- view 구조 직접. jquery기반 플러그인 사용.
+		</p>
+		<p>
+			be - spring boot, gradle 관리
+		</p>
+	</div>
+	<div class="card" id="card9">
+		<h2 data-focus="9" class="title">Slide 9. 마치며 Q&A</h2>
+		<p>
+			<span class="action" id="zoomout">ZOOM OUT!</span>
+		</p>
+		<p>
+			10분 넘었겠지?... 인사 잘하고 마무리!
+		</p>
+		<p>
+			<span class="action" id="zoomin">ZOOM IN!</span>
+		</p>
+	</div>
+</div>
+</body>
+</html>

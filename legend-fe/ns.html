@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<meta content="IE=edge" http-equiv=X-UA-Compatible> 
+<!-- <meta content="width=device-width,initial-scale=1" name=viewport> -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!-- 
+ --> 
+<link href="https://fonts.googleapis.com/css?family=Italianno" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/legend.css?20171211">
+<link rel="stylesheet" href="/css/slick.css">
+
+<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.10.4.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/js/slick.min.js"></script>
+<script type="text/javascript" src="/js/legend.js?20171210"></script>
+<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+
+<!--
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/jcarousel.connected-carousels.css">
+<script type="text/javascript" src="/js/jquery.jcarousel.min.js"></script>
+<script src="https://unpkg.com/vue"></script>
+ -->
+
+
+<style>
+html, body { height:100%; overflow:hidden }
+.ns-color{color: #e7382f;}
+.line20{border-bottom: 5px #e7382f solid;}
+#earth{ position:absolute; width:300%; height:300%; left:0%; top:0%; /* background-image: url("/images/ns/bg7.png"); */background-size:100%;}
+.card{ position: relative; width:33.333%; height:33.333%; float:left; padding :1em; }
+.mask{ position: relative; width:100%; height:100%; overflow: hidden; }
+
+#card1{background-color: #ffffff;}
+.home-title{text-align: right; font-size: 1.5em; float:right;}
+.home-name{font-size:130%; font-weight: 850;}
+.card-head{font-size:200%; font-weight: 900;}
+.card-body{padding-top: 1.5em;}
+
+.modal-frame{background-color: rgba(100,100,100,0.5); height:100%; width:100%; position: fixed; top: 0 ; left: 0; float: left; z-index: 100;}
+.iFrame-back{background-color: #ffffff;}
+.modal-headerz{ background-color:#ffffff;;width:100%; height:30px; margin-top: 1em;}
+#modal-header-text{font-weight: 900; color: #000000; font-size: 1.5em; padding-left: 0.5em;}
+#modal-close{position: absolute; right: 0.5em; top: 1.3em;}
+#alert-bar{ position: absolute; left: 0; top:0; padding: 0.5em 0 0 0; text-align: center; font-size: 1em; font-weight: 900;
+	width:100%; height:2em; margin: auto; background-color: rgba(150,150,150,0.5);
+}
+.css-cancel {
+    display: inline-block;
+    position: relative;
+    margin: 0 20px 0 7px;
+    padding: 0;
+    width: 4px;
+    height: 20px;
+    background: #000;
+    transform: rotate(45deg);
+}
+.css-cancel:before {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -8px;
+    width: 20px;
+    height: 4px;
+    margin-top: -2px;
+    background: #000;
+}
+.compare-table{width: 100%; text-align: center; align-content: center;}
+.compare-table tr{border-top: #cfcfcf 1px solid; padding: 0.5em 0 0.5em 0;}
+.compare-table td{ padding: 0.5em 0 0.5em 0;}
+</style>
+
+<script type="text/javascript">
+/** (0) GLOBAL Setting  ****************************************************/
+var controlSeq = 0;
+var userControl = true;
+var action = "";
+var errCount = 0;
+var arrW = [0,-100,-200];
+var arrH = [0,-100,-200];
+var fn = 1;
+/*******************************************************************************
+ **  DOCUMENT READY
+ ******************************************************************************/
+($(function(){
+	/** (1) VUE Component Setting *********************************************
+	var vm = new Vue({
+		el : '#card1'
+		, data: {
+			
+		}
+	//	, components:{
+	//		'card1' : () => import('./vue/test.vue')
+	//	}
+	});
+	*/
+	
+	/** (2) Event Binding  *****************************************************/
+	$('#btnClick').bind('click',function(){
+		moveFrame($('#num').val());
+	});
+	
+	$('#modal-close').click(function(){
+		$('.modal-frame').fadeOut(500);
+	});
+	
+	/** (3) Layout Setting  ****************************************************/
+  	var options = {
+	    preventDefault: true
+	  };
+	var hammer = new Hammer($('.mask')[0], options);
+	  hammer.get('swipe').set({
+	    direction: Hammer.DIRECTION_ALL
+	  });
+	  hammer.on("swipe", swiped);
+	  $('.slick').slick({
+		  autoplay:true,arrows:false
+	  });
+	/** (4) Animation Setting  *************************************************/
+	$('.hide-content').hide();
+}));
+/**  END OF DOCUMENT READY *****************************************************/
+
+	/** (5) Push Action Setting  ***********************************************/
+	function moveFrame(frameNum){
+		fn = parseInt(frameNum);
+		w = (fn-1) % 3;
+		y = parseInt((fn-1)/3);
+		$('#earth').stop().animate({
+			left: arrW[w]+'%'
+			,top: arrH[y]+'%'
+		},950,'easeOutBack');
+	}
+	function zoomin(){
+		$('#earth').stop().animate({width:"300%",height:"300%","font-size":"100%"},1000);
+	}
+	function zoomout(){
+		$('#earth').stop().animate({
+			left: arrW[0]+'%',top: arrH[0]+'%'
+			,width:"100%",height:"100%","font-size":"33.333%"
+			},1000);
+	}
+	
+	function goLgcom(){
+		$('.modal-headerz').css('background-color','#c6004d');
+		$('#modal-header-text').text("LG.com PDP");
+		$('#iFrame').attr('src','http://www.lg.com/my/tvs/lg-OLED65W7T');
+		$('.modal-frame').fadeIn(1000);
+	}
+	
+	function goSamsung(){
+		$('.modal-headerz').css('background-color','#034ea1');
+		$('#modal-header-text').text("Samsung Membership");
+		$('#iFrame').attr('src','http://membership.samsung.com/sec/');
+		$('.modal-frame').fadeIn(1000);
+	}
+	function goGithub(){
+		$('.modal-headerz').css('background-color','#ffffff');
+		$('#modal-header-text').text("Github - nspt");
+		$('#iFrame').attr('src','https://github.com/JeonYB/nspt');
+		$('.modal-frame').fadeIn(1000);
+	}
+	function hideModal(){
+		$('.modal-frame').fadeOut(500);
+	}
+	
+	/** (6) User Action Setting  ***********************************************/
+	function swiped(event) {
+	  if (event.direction == 4) {
+		  fn = fn < 2 ? fn :fn-1; 
+	  } else if (event.direction == 2) {
+		  fn = fn > 8 ? fn :fn+1;
+	  } else if (event.direction == 8) {
+		  fn = fn > 6 ? fn :fn+3;
+	  } else if (event.direction == 16) {
+		  fn = fn < 4 ? fn :fn-3;
+	  }
+	  if(userControl) moveFrame(fn);
+	}
+
+	var fDone = function(data){
+		if(data.controlSeq > controlSeq){
+			userControl = data.userControl;
+			fn = data.focus;
+			moveFrame(fn);
+			if(action != data.action){
+				action = data.action;
+				try{
+					if(action.indexOf('show') == 0 )	
+						$('#' + action.split('show-')[1]).show(1000);
+					else
+						eval(action+"();");
+				}catch(e){}
+			}
+		}
+		controlSeq = data.controlSeq;
+	}
+
+	var fError = function(){
+		if(errCount++ > 10){
+			console.log("서버가 죽으셨나...");
+		}
+	}
+	
+	// polling;;;; not push
+	var getOrder = function(){
+		$.getJSON(W_DOMAIN + PT_URL + CALLBACK_OPTION).done(fDone).error(fError);
+		var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+		var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
+		if(width - height > 0){
+			var $alertBar = $('#alert-bar');
+			$alertBar.clearQueue();
+			$alertBar.text("스마트폰 세로모드 전용 페이지입니다!");
+			$alertBar.stop().css({display:'block'}).animate({opacity: 1.0},1000);
+			$.when($alertBar).then(function(){
+				$alertBar.stop().animate({opacity: 0.0},1000);
+			});
+		}
+	}
+	setInterval(getOrder,1000);
+</script>
+
+<title>NS HomeShopping-전 영배</title>
+</head>
+<body class="ft-ngothic">
+<div class="mask">
+	<div id="earth" id="app1">
+		<div class="card" id="card1">
+			<div class="logo">
+				<img src="/images/ns/logo_home.png" width="100%">
+			</div>
+			<div>
+				<span class="home-title"><sapn class="ns-color home-name">NS</sapn>홈쇼핑 지원자 <b class="home-name">전 영배</b></span>
+			</div>
+		</div>
+		<div class="card" id="card2">
+			<h2 class="card-head"> INDEX. </h2>
+			<div class="line20"></div>
+			<div class="pb30 "></div>
+			<div class="card-body">
+				<p>Slide 3. 지원자 전 영배 소개</p>
+				<p>Slide 4. 지엠솔루션 입사</p>
+				<p>Slide 5. 대교 눈높이</p>
+				<p>Slide 6. LG.com / 삼성멤버십</p>
+				<p>Slide 7. e-Bay / CJ-Hello</p>
+				<p>Slide 8. Github! NS-PT(be,fe)</p>
+				<p>Slide 9. Q&A</p>
+			</div>
+		</div>
+		<div class="card" id="card3">
+			<h2 class="card-head"> 전영배를 소개합니다. </h2>
+			<div class="line20"></div>
+			<div class="card-body slick">
+				<div>
+					<img src="/images/ns/slide3/slide3-1.png" width="100%" />
+				</div>
+				<div>
+					<img src="/images/ns/slide3/slide3-2.png" width="100%" />
+				</div>
+				<div>
+					<img src="/images/ns/slide3/slide3-3.png" width="100%" />
+				</div>
+			</div>
+			<div class="pd10">
+				<p>생년월일 : 1987년 11월 11일 생</p>
+				<p>사 는 곳 : 경기도 안양시 거주 <span class="big150 red hide-content" id="action-slide3-1">30분내 도착!</span></p>
+				<p>협성대학교 컴퓨터공학과 출신</p>
+				<p>밝고 긍정적인 성격! </p>
+				<p>지엠솔루션에서 SI/SM 등을 약 5년간 수행</p>
+				<p>주로 Java Web/Backend를 개발.</p>
+			</div>	
+		</div>
+		<div class="card" id="card4">
+			<h2 class="card-head"> LGCNS - UCAMP </h2>
+			<div class="line20"></div>
+			<div class="pd10">
+				<img src="/images/ns/slide4/slide4-2.png" width="100%" />
+			</div>
+			<div>
+				<p>UCAMP 입소 후 공부할 책들..</p>
+			</div>			
+			<h2 class="card-head">모바일 인트라넷 구축</h2>
+			<div class="pd10">
+				<img src="/images/ns/slide4/slide4-1.gif" width="100%" />
+			</div>
+			<div>
+				<p>model 1 기반 jsp를 MVC + jQueryM으로 컨버팅</p>
+			</div>			
+		</div>
+		<div class="card" id="card5">
+			<h2 class="card-head">대교 눈높이 SM 운영</h2>
+			<div class="line20"></div>
+			<div class="pb10">
+				<p>SMART MOS</p>
+			</div>
+			<div class="pb20">
+				<img src="/images/ns/slide5/slide5.gif" width="100%" />
+			</div>
+			<div>
+				<p>입사 후 첫 SM 파견</p>
+				<p>2년 반동안의 깊은 배움</p>
+				<p>Android Application과 인터페이스</p>
+				<p>Oracle과 더욱 친해질 수 있던 계기</p>
+				<p class="big150 red hide-content" id="action-slide5-1">모바일용 모니터링 페이지 개발!</p>
+			</div>
+		</div>
+		<div class="card" id="card6">
+			<h2 class="card-head"> LG.com / 삼성 멤버십</h2>
+			<div class="line20"></div>
+			<div>
+				<table class="compare-table">
+					<tr>
+						<td><img src="/images/ns/slide6/lg.gif" width="70%"/></td>
+						<td><img src="/images/ns/slide6/samsung.gif" width="70%"/></td>
+					</tr>
+					<tr>
+						<td>2015년11월<br/> ~ 2016년06월 <br/>/ 8개월</td>
+						<td>2016년06월<br/> ~ 2016년12월 <br/>/ 6개월</td>
+					</tr>
+					<tr>
+						<td>국가별 메시징<br/>PDP Features<br/>Find the Right Product<br/>Product Compare</td>
+						<td>디자인 리뉴얼<br/>추가기능 개발</td>
+					</tr>
+					<tr>
+						<td>DevOn<br/>Spring<br/>Free Marker</td>
+						<td>Spring<br/>SEMP<br/>SAP RFC</td>
+					</tr>
+					<tr>
+						<td>팀의 중간자!</td>
+						<td>어쩌다가 PL...</td>
+					</tr>
+					<tr>
+						<td><a href="javascript:goLgcom();"> GO HOMPAGE ! </a></td>
+						<td><a href="javascript:goSamsung();"> GO HOMPAGE ! </a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="card" id="card7">
+			<h2 class="card-head"> e-Bay / CJ-Hello</h2>
+			<div class="line20"></div>
+			<div>
+				<table class="compare-table">
+					<tr>
+						<td><img src="/images/ns/slide7/slide7-2.png" width="70%"/></td>
+						<td><img src="/images/ns/slide7/slide7-1.png" width="70%"/></td>
+					</tr>
+					<tr>
+						<td>2016년12월<br/> ~ 2017년7월 <br/>/ 8개월</td>
+						<td>2016년7월<br/> ~ <span class="red">현재</span> <br/> / 6개월</td>
+					</tr>
+					<tr>
+						<td>LQS. List Quality Score<br/>
+						마이페이지(주문내역, 클레임) 운영<br/>
+						</td>
+						<td>
+							인터페이스<br/>
+							정산<br/>
+							렌탈 파트너웹사이트<br/>
+							렌탈 에이전트
+						</td>
+					</tr>
+					<tr>
+						<td>ASP.NET MVC<br/>NodeJS<br/>AngularJS React<br/>MSSQL MongoDB <br/>Rabbit MQ</td>
+						<td>Spring<br/> Socket Programming<br/>MiPlatform<br/>Proframe2.0(java)<br/>Oracle</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="card" id="card8">
+			<h2 class="card-head"> Github! NS-PT(be,fe)</h2>
+			<div class="line20"></div>
+			<div class="pt50">
+				<img src=/images/ns/slide8/nspt-readme.png width="100%"/>
+			</div>
+			<div>
+				<p>스마트폰을 이용한 <span class="red">Presentation!</span></p>
+				<p>바둑판식 <span class="red">View</span> 구조!</p>
+				<p>역동적인 <span class="red">Slide</span> 이동!</p>
+				<p>https://github.com/JeonYB/nspt</p>
+				<p>실 개발은 <span class="red">Gitlab</span>에서 진행하였습니다.(private...)</p>
+			</div>
+		</div>
+		<div class="card" id="card9">
+			<div class="pt70">
+				<img src="/images/ns/slide9/qna.jpg" width="100%" />
+			</div>
+		</div>
+	</div>
+</div>
+<div class="hide-content modal-frame">
+	<div class="modal-headerz">
+		<div id="modal-header-text">
+		</div>
+			<div id="modal-close" class="css-cancel"></div>
+		</div>
+	<div class="iFrame-back">
+		<iframe id="iFrame" width="100%" height="450px" src=""></iframe>
+	</div>
+</div>
+<div class="hide-content ns-color" id="alert-bar"></div>
+</body>
+</html>

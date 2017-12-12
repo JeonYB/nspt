@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<meta content="IE=edge" http-equiv=X-UA-Compatible> 
+<!-- <meta content="width=device-width,initial-scale=1" name=viewport> -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+
+ 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Italianno" rel="stylesheet">
+
+<link rel="stylesheet" href="./css/legend.css?1">
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" src="./js/legend.js"></script>
+<script type="text/javascript" src="./js/legend-join.js?12sdfsa"></script>
+
+<title>레전드 혈맹 가입신청</title>
+</head>
+<body class="bkGrd ft-ngothic">
+<form id="joinForm" name="joinForm" method="post" enctype="multipart/form-data" >
+<div class="container">
+	<div class="row">
+		<div class="col-xd-12">
+			<div class="legend-top">
+				<img src="./images/2.jpg" class="img-responsive"/>
+				<div class="legend-top-text">
+					<div class="ft-ital">
+						<span class="logoFont big300">Legend</span>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<!--START -->
+	<div class="center under-line2-40 mg10">
+		<h2>JOIN US</h2>
+	</div>
+	<div>&nbsp;</div>
+	
+
+	<!------------------------------------------------ 아이디/패스워드 ------------------------------------------------>
+	<div class="row">
+		<div class="col-xs-6">
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon-id">아이디</span>
+				<input type="text" name="id" id="id" class="form-control" placeholder="목" aria-describedby="basic-addon-id">
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon-pw">P/W</span>
+				<input type="password" name="pw" id="pw" class="form-control" placeholder="가입확인용" aria-describedby="basic-addon-pw">
+			</div>
+		</div>
+	</div>
+	<div>&nbsp;</div>
+	
+	
+	<!------------------------------------------------ 레벨 / AC / 거주지역 ------------------------------------------------>
+	<div class="row">
+		<div class="col-xs-3">
+			<div class="input-group input-group-sm">
+				<input type="text" name="lv" id="lv" class="form-control" placeholder="Level" aria-describedby="basic-addon-lv">
+			</div>
+		</div>
+		<div class="col-xs-4">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon" id="basic-addon-ac">AC</span>
+				<input type="text" name="ac" id="ac" class="form-control" placeholder="-95" aria-describedby="basic-addon-ac">
+			</div>
+		</div>
+		<div class="col-xs-5">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon" id="basic-addon-region">거주지</span>
+				<input type="text" name="region" id="region" class="form-control" placeholder="서울" aria-describedby="basic-addon-region">
+			</div>
+		</div>
+	</div>
+	<div>&nbsp;</div>
+	
+	
+	<!------------------------------------------------ 보유장비 ------------------------------------------------>
+	<div class="row mgdn2">
+		<div class="col-xs-12">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon" id="basic-addon-lv">무기</span>
+				<input type="text" name="sward" id="sward" class="form-control" placeholder="55" aria-describedby="basic-addon-lv">
+			</div>
+		</div>
+	</div>
+	<div class="row mgdn2">		
+		<div class="col-xs-12">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon" id="basic-addon-ac">귀걸</span>
+				<input type="text" name="earring" id="earring" class="form-control" placeholder="-95" aria-describedby="basic-addon-ac">
+			</div>
+		</div>
+	</div>
+	<div class="row mgdn2">
+		<div class="col-xs-12">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon" id="basic-addon-region">반지</span>
+				<input type="text" name="ring" id="ring" class="form-control" placeholder="서울" aria-describedby="basic-addon-region">
+			</div>
+		</div>
+	</div>
+	<div>&nbsp;</div>
+	
+	
+	<!------------------------------------------------ 캡쳐 ------------------------------------------------>
+	<div class="row">
+		<div class="col-xs-6">
+			<label for="cap1">장비1 캡쳐</label>
+			<input type="file" name="cap1" id="cap1"/>
+		</div>
+		<div class="col-xs-6">
+			<label for="cap2">장비2 캡쳐</label>
+			<input type="file" name="cap2" id="cap2"/>
+		</div>
+	</div>
+	<div>&nbsp;</div>
+	
+	
+	<!------------------------------------------------ 소개 ------------------------------------------------>
+	<div class="row">
+		<div class="col-xs-12">
+			<textarea class="form-control" rows="3" name="intro" id="intro" placeholder="간단한 소개"></textarea>	
+		</div>
+	</div>
+	<div>&nbsp;</div>
+	
+
+	<!------------------------------------------------ 카톡 ------------------------------------------------>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon" id="basic-addon-ac">카톡or연락처</span>
+				<input type="text" name="kakaoid" id="kakaoid" class="form-control" placeholder="kakaoid" aria-describedby="basic-addon-ac">
+			</div>
+		</div>
+	</div>
+	<div>&nbsp;</div>
+	
+
+	<!------------------------------------------------ 버튼그룹 ------------------------------------------------>
+	<div class="center">
+		<button type="button" id="btnJoin" class="btn btn-info btn-lg btn-block">가입신청</button>
+	</div>
+	<div>&nbsp;</div>
+
+####Test####
+	<div id="result"></div>
+
+</div>
+</form>
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-10">
+				Copyrightⓒ <b>JYB Communication</b>. All right reserved.
+			</div>
+			<div class="col-xs-2">
+				<div>
+					<p class="big300"><span class="glyphicon glyphicon-leaf" area-hiden="true"></span></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+</body>
+</html>
